@@ -1,0 +1,5 @@
+rootProject.name = 'Example'
+include ':react-native-recording'
+project(':react-native-recording').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-recording/android')
+
+include ':app'
