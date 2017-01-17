@@ -12,12 +12,15 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 class RecordingModule extends ReactContextBaseJavaModule {
+    private final ReactApplicationContext reactContext;
     private AudioRecord audioRecord;
     private boolean isRecording;
     private int bufferSize = 2048;
+    private Thread recordingThread;
 
     RecordingModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        this.reactContext = reactContext;
     }
 
     @Override
@@ -27,6 +30,10 @@ class RecordingModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void start(int sampleRate, int bufferSize) {
+        if (isRecording || (recordingThread != null && recordingThread.isAlive())) {
+            return;
+        }
+
         this.bufferSize = bufferSize;
         audioRecord = new AudioRecord(
                 MediaRecorder.AudioSource.MIC,
@@ -36,11 +43,12 @@ class RecordingModule extends ReactContextBaseJavaModule {
                 bufferSize);
         audioRecord.startRecording();
         isRecording = true;
-        new Thread(new Runnable() {
+        recordingThread = new Thread(new Runnable() {
             public void run() {
                 recording();
             }
-        }, "RecordingThread").start();
+        }, "RecordingThread");
+        recordingThread.start();
     }
 
     @ReactMethod
@@ -54,7 +62,7 @@ class RecordingModule extends ReactContextBaseJavaModule {
 
     private void recording() {
         byte data[] = new byte[bufferSize];
-        while (isRecording) {
+        while (isRecording && !reactContext.getCatalystInstance().isDestroyed()) {
             WritableArray array = Arguments.createArray();
             audioRecord.read(data, 0, bufferSize);
             for (byte value : data) {
@@ -65,7 +73,7 @@ class RecordingModule extends ReactContextBaseJavaModule {
     }
 
     private void sendEvent(String eventName, Object params) {
-        getReactApplicationContext()
+        reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
     }
