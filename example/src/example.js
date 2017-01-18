@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import {
-  View,
-  WebView,
-  NativeModules,
-  NativeAppEventEmitter } from 'react-native'
+import { View, WebView } from 'react-native'
+import Recording from 'react-native-recording'
 
 export default class Main extends Component {
   componentDidMount() {
-    NativeModules.Recording.start(8000, 1024)
-    NativeAppEventEmitter.addListener('recording', this.recording.bind(this))
+    Recording.start(8000, 1024)
+    Recording.onRecording = this.recording.bind(this)
   }
 
   componentWillUnmount() {

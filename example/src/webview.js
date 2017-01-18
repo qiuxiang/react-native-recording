@@ -11,7 +11,7 @@ Waveform.prototype.update = function (data) {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
   this.context.beginPath()
   data.reduce((function (x, value, index) {
-    var y = (2 + value / 256) * this.canvas.height / 4
+    var y = (0.5 + value / 128 / 8) * this.canvas.height
     if(index > 0) {
       this.context.lineTo(x, y)
     } else {
@@ -24,10 +24,7 @@ Waveform.prototype.update = function (data) {
 
 var waveform = new Waveform('#canvas')
 window.document.addEventListener('message', function (event) {
-  var data = event.data.split(',')
-  data.pop()
-  data = data.map(function (value) {
-    return parseFloat(value)
-  })
-  waveform.update(data)
+  waveform.update(event.data.split(',').map(function (value) {
+    return parseInt(value)
+  }))
 })

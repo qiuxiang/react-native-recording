@@ -1,6 +1,8 @@
-
-import { NativeModules } from 'react-native';
-
-const { Recording } = NativeModules;
-
-export default Recording;
+import { NativeModules, NativeAppEventEmitter } from 'react-native'
+const { Recording } = NativeModules
+NativeAppEventEmitter.addListener('recording', data => {
+  if (Recording.onRecording) {
+    Recording.onRecording(data)
+  }
+})
+export default Recording
