@@ -1,18 +1,19 @@
 
 {
   "name": "react-native-recording",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "react-native recording module used for DSP",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "recording"
   ],
   "author": "Qiu Xiang <xiang.qiu@qq.com>",
   "license": "MIT",
   "peerDependencies": {
-    "react-native": "^0.40.0"
+    "react-native": "*"
   }
 }
