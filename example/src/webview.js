@@ -11,7 +11,7 @@ Waveform.prototype.update = function (data) {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
   this.context.beginPath()
   data.reduce((function (x, value, index) {
-    var y = (0.5 + value / 128 / 8) * this.canvas.height
+    var y = (0.5 + value / 16384) * this.canvas.height
     if(index > 0) {
       this.context.lineTo(x, y)
     } else {
@@ -28,3 +28,7 @@ window.document.addEventListener('message', function (event) {
     return parseInt(value)
   }))
 })
+
+document.ontouchmove = function (event) {
+  event.preventDefault()
+}

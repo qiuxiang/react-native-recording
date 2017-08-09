@@ -15,7 +15,7 @@ class RecordingModule extends ReactContextBaseJavaModule {
     private final ReactApplicationContext reactContext;
     private AudioRecord audioRecord;
     private boolean isRecording;
-    private int bufferSize = 2048;
+    private int bufferSize;
     private Thread recordingThread;
 
     RecordingModule(ReactApplicationContext reactContext) {
@@ -40,7 +40,7 @@ class RecordingModule extends ReactContextBaseJavaModule {
                 sampleRate,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT,
-                bufferSize);
+                bufferSize * 2);
         audioRecord.startRecording();
         isRecording = true;
         recordingThread = new Thread(new Runnable() {
@@ -61,12 +61,12 @@ class RecordingModule extends ReactContextBaseJavaModule {
     }
 
     private void recording() {
-        byte data[] = new byte[bufferSize];
+        short data[] = new short[bufferSize];
         while (isRecording && !reactContext.getCatalystInstance().isDestroyed()) {
             WritableArray array = Arguments.createArray();
             audioRecord.read(data, 0, bufferSize);
-            for (byte value : data) {
-                array.pushInt(value);
+            for (float value : data) {
+                array.pushInt((int) value);
             }
             sendEvent("recording", array);
         }
