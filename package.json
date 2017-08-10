@@ -2,17 +2,17 @@
 {
   "name": "react-native-recording",
   "version": "0.1.0",
-  "description": "react-native recording module used for DSP",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "React Native recording module used for DSP",
+  "author": "Qiu Xiang <xiang.qiu@qq.com>",
+  "license": "MIT",
   "keywords": [
     "react-native",
     "recording"
   ],
-  "author": "Qiu Xiang <xiang.qiu@qq.com>",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qiuxiang/react-native-amap3d"
+  },
   "peerDependencies": {
     "react-native": "*"
   }
