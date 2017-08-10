@@ -1,14 +1,9 @@
-#import <React/RCTEventEmitter.h>
-#import <AVFoundation/AVFoundation.h>
-
-@interface Recording : RCTEventEmitter <RCTBridgeModule>
-- (void)processInputBuffer:(AudioQueueBufferRef)inBuffer queue:(AudioQueueRef)queue;
-@end
+#import "Recording.h"
 
 @implementation Recording {
     AudioQueueRef _queue;
     AudioQueueBufferRef _buffer;
-    id _audioData[4096];
+    NSNumber *_audioData[4096];
     UInt32 _bufferSize;
     bool _isRecording;
 }
@@ -68,7 +63,7 @@ RCT_EXPORT_METHOD(stop) {
     return @[@"recording"];
 }
 
--(void)dealloc {
+- (void)dealloc {
     AudioQueueStop(_queue, YES);
 }
 
