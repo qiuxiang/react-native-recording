@@ -30,7 +30,7 @@ setTimeout(() => {
       return parseInt(value)
     }))
   })
-}, 1)
+}, 100)
 
 document.ontouchmove = function (event) {
   event.preventDefault()
