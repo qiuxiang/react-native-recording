@@ -1,4 +1,4 @@
-package cn.qiuxiang.react;
+package cn.qiuxiang.react.recording;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;

@@ -1,24 +1,17 @@
-package cn.qiuxiang.react;
+package cn.qiuxiang.react.recording;
 
 import com.facebook.react.ReactPackage;
-import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class RecordingPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Arrays.<NativeModule>asList(new RecordingModule(reactContext));
-    }
-
-    @Override
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-        return Collections.emptyList();
+        return Collections.<NativeModule>singletonList(new RecordingModule(reactContext));
     }
 
     @Override

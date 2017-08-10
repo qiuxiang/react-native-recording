@@ -1,4 +1,4 @@
-rootProject.name = 'Example'
+rootProject.name = 'RNRecording'
 include ':react-native-recording'
 project(':react-native-recording').projectDir = new File(rootProject.projectDir, '../../android')
 

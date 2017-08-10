@@ -1,4 +1,4 @@
-package com.example;
+package com.rnrecording;
 
 import android.app.Application;
 
@@ -11,18 +11,18 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.qiuxiang.react.RecordingPackage;
+import cn.qiuxiang.react.recording.RecordingPackage;
 
 public class MainApplication extends Application implements ReactApplication {
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
         @Override
-        protected boolean getUseDeveloperSupport() {
+        public boolean getUseDeveloperSupport() {
             return BuildConfig.DEBUG;
         }
 
         @Override
         protected List<ReactPackage> getPackages() {
-            return Arrays.<ReactPackage>asList(
+            return Arrays.asList(
                     new MainReactPackage(),
                     new RecordingPackage()
             );
