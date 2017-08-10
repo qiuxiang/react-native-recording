@@ -1,4 +1,4 @@
-package com.qiuxiang.rn;
+package cn.qiuxiang.react;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -13,7 +13,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 class RecordingModule extends ReactContextBaseJavaModule {
     private final ReactApplicationContext reactContext;
-    private AudioRecord audioRecord;
+    private static AudioRecord audioRecord;
     private boolean isRecording;
     private int bufferSize;
     private Thread recordingThread;
@@ -32,6 +32,11 @@ class RecordingModule extends ReactContextBaseJavaModule {
     public void start(int sampleRate, int bufferSize) {
         if (isRecording || (recordingThread != null && recordingThread.isAlive())) {
             return;
+        }
+
+        if (audioRecord != null) {
+            audioRecord.stop();
+            audioRecord.release();
         }
 
         this.bufferSize = bufferSize;
