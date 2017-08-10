@@ -12,9 +12,9 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 class RecordingModule extends ReactContextBaseJavaModule {
-    private final ReactApplicationContext reactContext;
     private static AudioRecord audioRecord;
-    private boolean isRecording;
+    private final ReactApplicationContext reactContext;
+    private boolean running;
     private int bufferSize;
     private Thread recordingThread;
 
@@ -29,8 +29,8 @@ class RecordingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void start(int sampleRate, int bufferSize) {
-        if (isRecording || (recordingThread != null && recordingThread.isAlive())) {
+    public void init(int sampleRate, int bufferSize) {
+        if (running || (recordingThread != null && recordingThread.isAlive())) {
             return;
         }
 
@@ -39,35 +39,44 @@ class RecordingModule extends ReactContextBaseJavaModule {
             audioRecord.release();
         }
 
-        this.bufferSize = bufferSize;
         audioRecord = new AudioRecord(
                 MediaRecorder.AudioSource.MIC,
                 sampleRate,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT,
                 bufferSize * 2);
-        audioRecord.startRecording();
-        isRecording = true;
+
         recordingThread = new Thread(new Runnable() {
             public void run() {
                 recording();
             }
         }, "RecordingThread");
-        recordingThread.start();
+
+        this.bufferSize = bufferSize;
+    }
+
+    @ReactMethod
+    public void start() {
+        if (!running && audioRecord != null && recordingThread != null) {
+            running = true;
+            audioRecord.startRecording();
+            recordingThread.start();
+        }
     }
 
     @ReactMethod
     public void stop() {
         if (audioRecord != null) {
-            isRecording = false;
+            running = false;
             audioRecord.stop();
             audioRecord.release();
+            audioRecord = null;
         }
     }
 
     private void recording() {
         short data[] = new short[bufferSize];
-        while (isRecording && !reactContext.getCatalystInstance().isDestroyed()) {
+        while (running && !reactContext.getCatalystInstance().isDestroyed()) {
             WritableArray array = Arguments.createArray();
             audioRecord.read(data, 0, bufferSize);
             for (float value : data) {

@@ -11,6 +11,7 @@ $ react-native link react-native-recording
 ```javascript
 import Recording from 'react-native-recording'
 
-Recording.start(8000, 1024)
+Recording.init(8000, 1024)
+Recording.start()
 Recording.on('recording', data => console.log(data))
 ```

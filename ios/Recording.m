@@ -3,9 +3,8 @@
 @implementation Recording {
     AudioQueueRef _queue;
     AudioQueueBufferRef _buffer;
-    NSNumber *_audioData[4096];
+    NSNumber *_audioData[8192];
     UInt32 _bufferSize;
-    bool _isRecording;
 }
 
 void inputCallback(
@@ -20,10 +19,8 @@ void inputCallback(
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(start:(int)sampleRate bufferSize:(int)bufferSize) {
-    if (_isRecording) {
-        return;
-    }
+RCT_EXPORT_METHOD(init:(int)sampleRate bufferSize:(int)bufferSize) {
+    _bufferSize = (UInt32) bufferSize;
 
     AudioStreamBasicDescription description;
     description.mReserved = 0;
@@ -39,10 +36,10 @@ RCT_EXPORT_METHOD(start:(int)sampleRate bufferSize:(int)bufferSize) {
     AudioQueueNewInput(&description, inputCallback, (__bridge void *) self, NULL, NULL, 0, &_queue);
     AudioQueueAllocateBuffer(_queue, (UInt32) (bufferSize * 2), &_buffer);
     AudioQueueEnqueueBuffer(_queue, _buffer, 0, NULL);
-    AudioQueueStart(_queue, NULL);
+}
 
-    _bufferSize = (UInt32) bufferSize;
-    _isRecording = true;
+RCT_EXPORT_METHOD(start) {
+    AudioQueueStart(_queue, NULL);
 }
 
 RCT_EXPORT_METHOD(stop) {

@@ -4,7 +4,8 @@ import Recording from 'react-native-recording'
 
 export default class Main extends Component {
   componentDidMount() {
-    Recording.start(8000, 1024)
+    Recording.init(8000, 1024)
+    Recording.start()
     Recording.on('recording', data => {
       if (this.webView) {
         this.webView.postMessage(data)
