@@ -2635,8 +2635,9 @@ react-devtools-core@2.3.1:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-native-recording@..:
-  version "0.1.1"
+react-native-recording@^0.2.0:
+  version "0.2.0"
+  resolved "http://registry.npm.taobao.org/react-native-recording/download/react-native-recording-0.2.0.tgz#1f9152636c73eebdbfcbf1a13c4ba2532f964319"
 
 react-native@0.47.1:
   version "0.47.1"

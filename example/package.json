@@ -9,7 +9,7 @@
   "dependencies": {
     "react": "16.0.0-alpha.12",
     "react-native": "0.47.1",
-    "react-native-recording": ".."
+    "react-native-recording": "^0.2.0"
   },
   "devDependencies": {
     "babel-preset-react-native": "2.1.0"
