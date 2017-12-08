@@ -38,6 +38,26 @@ RCT_EXPORT_METHOD(init:(int)sampleRate bufferSize:(int)bufferSize) {
     AudioQueueEnqueueBuffer(_queue, _buffer, 0, NULL);
 }
 
+RCT_EXPORT_METHOD(initWithOptions:(NSDictionary *)options) {
+    UInt32 bufferSize = options[@"bufferSize"] == nil ? 8192 : [options[@"bufferSize"] unsignedIntegerValue];
+    _bufferSize = bufferSize;
+    
+    AudioStreamBasicDescription description;
+    description.mReserved         = 0;
+    description.mSampleRate       = options[@"sampleRate"] == nil ?       44100 : [options[@"sampleRate"] doubleValue];
+    description.mBitsPerChannel   = options[@"bitsPerChannel"] == nil ?      16 : [options[@"bitsPerChannel"] unsignedIntegerValue];
+    description.mChannelsPerFrame = options[@"channelsPerFrame"] == nil ?     1 : [options[@"channelsPerFrame"] unsignedIntegerValue];
+    description.mFramesPerPacket  = options[@"framesPerPacket"] == nil ?      1 : [options[@"framesPerPacket"] unsignedIntegerValue];
+    description.mBytesPerFrame    = options[@"bytesPerFrame"] == nil ?        2 : [options[@"bytesPerFrame"] unsignedIntegerValue];
+    description.mBytesPerPacket   = options[@"bytesPerPacket"] == nil ?       2 : [options[@"bytesPerPacket"] unsignedIntegerValue];
+    description.mFormatID         = kAudioFormatLinearPCM;
+    description.mFormatFlags      = kAudioFormatFlagIsSignedInteger;
+    
+    AudioQueueNewInput(&description, inputCallback, (__bridge void *) self, NULL, NULL, 0, &_queue);
+    AudioQueueAllocateBuffer(_queue, (UInt32) (bufferSize * 2), &_buffer);
+    AudioQueueEnqueueBuffer(_queue, _buffer, 0, NULL);
+}
+
 RCT_EXPORT_METHOD(start) {
     AudioQueueStart(_queue, NULL);
 }
