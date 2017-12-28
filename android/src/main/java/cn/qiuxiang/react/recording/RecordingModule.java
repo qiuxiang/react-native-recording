@@ -15,6 +15,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 class RecordingModule extends ReactContextBaseJavaModule {
     private static AudioRecord audioRecord;
     private final ReactApplicationContext reactContext;
+    private DeviceEventManagerModule.RCTDeviceEventEmitter eventEmitter;
     private boolean running;
     private int bufferSize;
     private Thread recordingThread;
@@ -30,34 +31,11 @@ class RecordingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void init(int sampleRate, int bufferSize) {
-        if (running || (recordingThread != null && recordingThread.isAlive())) {
-            return;
+    public void init(ReadableMap options) {
+        if (eventEmitter == null) {
+            eventEmitter = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
         }
 
-        if (audioRecord != null) {
-            audioRecord.stop();
-            audioRecord.release();
-        }
-
-        audioRecord = new AudioRecord(
-                MediaRecorder.AudioSource.MIC,
-                sampleRate,
-                AudioFormat.CHANNEL_IN_MONO,
-                AudioFormat.ENCODING_PCM_16BIT,
-                bufferSize * 2);
-
-        recordingThread = new Thread(new Runnable() {
-            public void run() {
-                recording();
-            }
-        }, "RecordingThread");
-
-        this.bufferSize = bufferSize;
-    }
-
-    @ReactMethod
-    public void initWithOptions(ReadableMap options) {
         if (running || (recordingThread != null && recordingThread.isAlive())) {
             return;
         }
@@ -71,32 +49,33 @@ class RecordingModule extends ReactContextBaseJavaModule {
         // https://developer.android.com/reference/android/media/AudioRecord.html
 
         int sampleRateInHz = 44100;
-        if(options.hasKey("sampleRate")) {
+        if (options.hasKey("sampleRate")) {
             sampleRateInHz = options.getInt("sampleRate");
         }
 
         int channelConfig = AudioFormat.CHANNEL_IN_MONO;
-        if(options.hasKey("channelsPerFrame")) {
+        if (options.hasKey("channelsPerFrame")) {
             int channelsPerFrame = options.getInt("channelsPerFrame");
 
             // every other case --> CHANNEL_IN_MONO
-            if(channelsPerFrame == 2)
+            if (channelsPerFrame == 2) {
                 channelConfig = AudioFormat.CHANNEL_IN_STEREO;
+            }
         }
 
         // we support only 8-bit and 16-bit PCM
         int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
-        if(options.hasKey("bitsPerChannel")) {
+        if (options.hasKey("bitsPerChannel")) {
             int bitsPerChannel = options.getInt("bitsPerChannel");
 
-            if(bitsPerChannel == 8)
+            if (bitsPerChannel == 8) {
                 audioFormat = AudioFormat.ENCODING_PCM_8BIT;
+            }
         }
 
-        if(options.hasKey("bufferSize")) {
+        if (options.hasKey("bufferSize")) {
             this.bufferSize = options.getInt("bufferSize");
-        }
-        else {
+        } else {
             this.bufferSize = 8192;
         }
 
@@ -111,7 +90,7 @@ class RecordingModule extends ReactContextBaseJavaModule {
             public void run() {
                 recording();
             }
-        }, "RecordingThread");        
+        }, "RecordingThread");
     }
 
     @ReactMethod
@@ -134,20 +113,14 @@ class RecordingModule extends ReactContextBaseJavaModule {
     }
 
     private void recording() {
-        short data[] = new short[bufferSize];
+        short buffer[] = new short[bufferSize];
         while (running && !reactContext.getCatalystInstance().isDestroyed()) {
-            WritableArray array = Arguments.createArray();
-            audioRecord.read(data, 0, bufferSize);
-            for (float value : data) {
-                array.pushInt((int) value);
+            WritableArray data = Arguments.createArray();
+            audioRecord.read(buffer, 0, bufferSize);
+            for (float value : buffer) {
+                data.pushInt((int) value);
             }
-            sendEvent("recording", array);
+            eventEmitter.emit("recording", data);
         }
-    }
-
-    private void sendEvent(String eventName, Object params) {
-        reactContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, params);
     }
 }

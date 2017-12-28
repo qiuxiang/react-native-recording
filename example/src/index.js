@@ -4,20 +4,20 @@ import Recording from 'react-native-recording'
 
 export default class Main extends Component {
   componentDidMount() {
-    // Recording.init(44100, 4096)
-    Recording.initWithOptions({
+    Recording.init({
       bufferSize: 4096,
       sampleRate: 44100,
       bitsPerChannel: 16,
-      channelsPerFrame: 1
-    });
+      channelsPerFrame: 1,
+    })
 
-    Recording.start()
-    Recording.on('recording', data => {
+    const listener = Recording.addRecordingEventListener(data => {
       if (this.webView) {
         this.webView.postMessage(data)
       }
     })
+
+    Recording.start()
   }
 
   componentWillUnmount() {
