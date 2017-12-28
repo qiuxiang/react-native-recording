@@ -2,10 +2,11 @@
   "name": "react-native-recording",
   "version": "0.3.0",
   "description": "React Native audio recording module used for DSP",
-  "author": "Qiu Xiang <xiang.qiu@qq.com>",
+  "author": "Qiu Xiang <i@7c00.cc>",
   "license": "MIT",
   "keywords": [
     "react-native",
+    "audio-recording",
     "recording"
   ],
   "repository": {
@@ -13,6 +14,6 @@
     "url": "https://github.com/qiuxiang/react-native-recording"
   },
   "peerDependencies": {
-    "react-native": "*"
+    "react-native": ">=0.47"
   }
 }
