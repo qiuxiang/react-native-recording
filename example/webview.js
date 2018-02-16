@@ -12,7 +12,7 @@ Waveform.prototype.update = function (data) {
   this.context.beginPath()
   data.reduce((function (x, value, index) {
     const y = (0.5 + value / 16384) * this.canvas.height
-    if(index > 0) {
+    if (index > 0) {
       this.context.lineTo(x, y)
     } else {
       this.context.moveTo(x, y)
