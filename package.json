@@ -13,7 +13,33 @@
     "type": "git",
     "url": "https://github.com/qiuxiang/react-native-recording"
   },
+  "files": [
+    "lib/index.js",
+    "lib/android/src",
+    "lib/android/build.gradle",
+    "lib/ios"
+  ],
+  "main": "lib",
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "run-android": "node node_modules/react-native/local-cli/cli.js run-android",
+    "log-android": "node node_modules/react-native/local-cli/cli.js log-android",
+    "run-ios": "node node_modules/react-native/local-cli/cli.js run-ios"
+  },
   "peerDependencies": {
     "react-native": ">=0.47"
+  },
+  "devDependencies": {
+    "babel-preset-react-native": "^4.0.0",
+    "react": "16.2.0",
+    "react-native": "0.53.0"
+  },
+  "presets": [
+    "react-native"
+  ],
+  "rnpm": {
+    "android": {
+      "sourceDir": "lib/android"
+    }
   }
 }
