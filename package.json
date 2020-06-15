@@ -17,29 +17,19 @@
     "lib/index.js",
     "lib/android/src",
     "lib/android/build.gradle",
-    "lib/ios"
+    "lib/ios",
+    "react-native.config.js"
   ],
   "main": "lib",
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "run-android": "node node_modules/react-native/local-cli/cli.js run-android",
-    "log-android": "node node_modules/react-native/local-cli/cli.js log-android",
-    "run-ios": "node node_modules/react-native/local-cli/cli.js run-ios"
-  },
-  "peerDependencies": {
-    "react-native": ">=0.47"
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "release-android": "react-native run-android --variant=release",
+    "ios": "react-native run-ios"
   },
   "devDependencies": {
-    "babel-preset-react-native": "^4.0.0",
-    "react": "16.2.0",
-    "react-native": "0.53.0"
-  },
-  "presets": [
-    "react-native"
-  ],
-  "rnpm": {
-    "android": {
-      "sourceDir": "lib/android"
-    }
+    "react": "16.11.0",
+    "react-native": "0.62.2",
+    "react-native-webview": "^10.3.1"
   }
 }
