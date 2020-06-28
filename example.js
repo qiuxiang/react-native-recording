@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { PermissionsAndroid } from "react-native";
+import { PermissionsAndroid, Platform } from "react-native";
 import WebView from "react-native-webview";
 import Recording from "react-native-recording";
 
 export default class Main extends Component {
   async componentDidMount() {
-    await PermissionsAndroid.requestMultiple([
-      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-    ]);
+    if (Platform.OS === "android") {
+      await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+      ]);
+    }
 
     Recording.init({
       bufferSize: 4096,
@@ -17,8 +19,13 @@ export default class Main extends Component {
     });
 
     this.listener = Recording.addRecordingEventListener((data) => {
-      if (this.webView) {
-        this.webView.postMessage(data);
+      if (this.loaded) {
+        this.webView.injectJavaScript(`
+          waveform.update("${data}".split(",").map(function (value) {
+            return parseInt(value)
+          }));
+          true;
+        `);
       }
     });
 
@@ -35,6 +42,7 @@ export default class Main extends Component {
       <WebView
         ref={(ref) => (this.webView = ref)}
         style={{ flex: 1 }}
+        onLoad={() => this.loaded = true}
         source={{
           html: `<!doctype html>
 <meta name="viewport" content="width=device-width, user-scalable=no">
@@ -79,15 +87,7 @@ Waveform.prototype.update = function (data) {
   this.context.stroke()
 }
 
-// I don't know why android WebView can't get window width immediately
-setTimeout(() => {
-  const waveform = new Waveform('#canvas')
-  window.document.addEventListener('message', function (event) {
-    waveform.update(event.data.split(',').map(function (value) {
-      return parseInt(value)
-    }))
-  })
-}, 100)
+window.waveform = new Waveform('#canvas')
 
 document.ontouchmove = function (event) {
   event.preventDefault()

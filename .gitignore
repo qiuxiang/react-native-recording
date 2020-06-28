@@ -3,7 +3,9 @@
 node_modules/
 build/
 xcuserdata/
-project.xcworkspace/
+*.xcworkspace/
+Pods/
 
 *.iml
+Podfile.lock
 local.properties
