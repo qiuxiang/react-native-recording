@@ -1,7 +1,7 @@
 module.exports = {
   dependency: {
     platforms: {
-      ios: { project: "lib/ios" },
+      ios: { project: "lib/ios/react-native-recording.podspec" },
       android: { sourceDir: "lib/android" }
     }
   },
