@@ -1,6 +1,6 @@
 {
   "name": "react-native-recording",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "React Native audio recording module used for DSP",
   "author": "Qiu Xiang <i@7c00.cc>",
   "license": "MIT",
@@ -21,6 +21,7 @@
     "react-native.config.js"
   ],
   "main": "lib",
+  "types": "lib/index.d.ts",
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
@@ -28,8 +29,11 @@
     "ios": "react-native run-ios"
   },
   "devDependencies": {
+    "@types/react": "16.9.56",
+    "@types/react-native": "0.62.2",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-webview": "^10.3.1"
+    "react-native-webview": "^10.3.1",
+    "typescript": "^4.1.5"
   }
 }
