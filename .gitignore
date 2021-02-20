@@ -9,3 +9,5 @@ Pods/
 *.iml
 Podfile.lock
 local.properties
+
+.DS_Store
