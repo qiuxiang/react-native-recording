@@ -1149,11 +1149,7 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/balanced-match/download/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
-base64-js@^1.1.2:
-  version "1.2.3"
-  resolved "http://registry.npm.taobao.org/base64-js/download/base64-js-1.2.3.tgz#fb13668233d9614cf5fb4bce95a9ba4096cdf801"
-
-base64-js@^1.2.3:
+base64-js@^1.1.2, base64-js@^1.2.3:
   version "1.3.1"
   resolved "https://registry.npm.taobao.org/base64-js/download/base64-js-1.3.1.tgz#58ece8cb75dd07e71ed08c736abc5fac4dbf8df1"
   integrity sha1-WOzoy3XdB+ce0IxzarxfrE2/jfE=
@@ -3299,10 +3295,10 @@ react-native-webview@^10.3.1:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@0.62.2:
-  version "0.62.2"
-  resolved "https://registry.npm.taobao.org/react-native/download/react-native-0.62.2.tgz?cache=0&sync_timestamp=1592179077572&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-native%2Fdownload%2Freact-native-0.62.2.tgz#d831e11a3178705449142df19a70ac2ca16bad10"
-  integrity sha1-2DHhGjF4cFRJFC3xmnCsLKFrrRA=
+react-native@0.62.3:
+  version "0.62.3"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.62.3.tgz#9a2e96af3dedd0723c8657831eec4ed3c30f3299"
+  integrity sha512-b2/hDHDlO5Of2Zn1K5ZgvzOoUrvMEvlYU4miS9rcEBp5jK/9cRQn81HZ7NBmf4gzigGl8CxbSx1l10GUj1k8XQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@react-native-community/cli" "^4.5.1"
@@ -4098,11 +4094,7 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-whatwg-fetch@>=0.10.0:
-  version "2.0.3"
-  resolved "http://registry.npm.taobao.org/whatwg-fetch/download/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
-
-whatwg-fetch@^3.0.0:
+whatwg-fetch@>=0.10.0, whatwg-fetch@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npm.taobao.org/whatwg-fetch/download/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
   integrity sha1-/IBORYzEYACbGiuWa8iBfSV4rvs=
